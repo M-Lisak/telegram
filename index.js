@@ -35,7 +35,7 @@ const start = async () => {
                     await bot.sendMessage(chatId, `Добро пожаловать в телеграм бот!`);
                     return bot.sendMessage(chatId, 'Чтобы продолжить работу нужно зарегистрироваться', auth_inline)
                 } else {
-                    return bot.sendMessage(chatId, `Вы зарегистрированны с API: "${isUserCreate?.key_API || ''}"`, get_report_button)
+                    return bot.sendMessage(chatId, `Вы зарегистрированны с API: "${isUserCreate.key_API || ''}"`, get_report_button)
                 }
 
                 // return bot.sendMessage(chatId, 'Меню', inline_buttons)
@@ -54,9 +54,9 @@ const start = async () => {
 
         if(data === 'getTable') {
             const user = await UserModel.findOne({ where: { chatId: `${chatId}` } })
-            const table = await TablesModel.findOne({ where: { key_API: `${user?.key_API}` } })
+            const table = await TablesModel.findOne({ where: { key_API: `${user.key_API}` } })
             if(table) {
-                return bot.sendMessage(chatId, `https://docs.google.com/spreadsheets/d/${table?.linkToTable || ''}`)
+                return bot.sendMessage(chatId, `https://docs.google.com/spreadsheets/d/${table.linkToTable || ''}`)
             } else {
                 //если таблицы с таким ключом апишки нет, то нужно свободной таблице его назначить
                 const freeTable = await TablesModel.findOne({ where: { key_API: null } })
@@ -67,7 +67,7 @@ const start = async () => {
                 freeTable.key_API = user.key_API
                 await freeTable.save()
 
-                return bot.sendMessage(chatId, `https://docs.google.com/spreadsheets/d/${freeTable?.linkToTable || ''}`)
+                return bot.sendMessage(chatId, `https://docs.google.com/spreadsheets/d/${freeTable.linkToTable || ''}`)
             }
         }
         if(data === 'auth') {
